@@ -48,7 +48,7 @@ function App() {
     console.log('open settings');
   };
       // 
-      //<History history={history} />
+      //
       //<Settings setGoal={setGoal} setProgress={setProgress} setHistory={setHistory}/>
 
   return (
@@ -56,7 +56,7 @@ function App() {
      <Header openSettings={openSettings}/>
      <Activity goal={goal} progress={progress} />
      <DrinkLog logWater={logWater} />
-      
+     <History history={history} />
 
       
     </>
