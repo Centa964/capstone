@@ -3,14 +3,29 @@ import './App.css'
 import Header from './components/Header';
 import Activity from './components/Activity';
 import DrinkLog from './components/DrinkLog';
-//import History from './components/History';
-//import Settings from './components/Settings';
+import History from './components/History';
+import Settings from './components/Settings';
+import ReminderPopup from './components/ReminderPopup';
+
 
 function App() {
   //This is the state for the goal, progress, and history
   const [goal, setGoal] = useState(2500);
   const [ progress, setProgress ] = useState(0);
   const [ history, setHistory ] = useState([]);
+  const [ showReminder, setShowReminder ] = useState(false);
+
+  //a popup to shows every hour
+
+  useEffect(() => { 
+    const reminderTime = setInterval(() => {
+      setShowReminder(true);
+    }, 1000 * 60 * 60);
+
+    return () => clearInterval(reminderTime);
+  }, []); 
+
+
 
   //Load the previous history from local storage
   useEffect(() => {
@@ -47,9 +62,7 @@ function App() {
   const openSettings = () => {
     console.log('open settings');
   };
-      // 
-      //
-      //<Settings setGoal={setGoal} setProgress={setProgress} setHistory={setHistory}/>
+      
 
   return (
     <>
@@ -57,10 +70,10 @@ function App() {
      <Activity goal={goal} progress={progress} />
      <DrinkLog logWater={logWater} />
      <History history={history} />
-
-      
+     <Settings setGoal={setGoal} setProgress={setProgress} setHistory={setHistory}/>
+      <ReminderPopup showReminder={showReminder} setShowReminder={setShowReminder} />
     </>
   )
 }
 
-export default App
+export default App;
