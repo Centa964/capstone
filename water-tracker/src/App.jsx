@@ -3,8 +3,8 @@ import './App.css'
 import Header from './components/Header';
 import Activity from './components/Activity';
 import DrinkLog from './components/DrinkLog';
-import History from './components/History';
-import Settings from './components/Settings';
+//import History from './components/History';
+//import Settings from './components/Settings';
 
 function App() {
   //This is the state for the goal, progress, and history
@@ -35,23 +35,30 @@ function App() {
     const newProgress = progress + amount;
     setProgress(newProgress);
 
-    const newEntry = [
-      ...history,{
+    const newEntry = {
         amount,
         timestamp: new Date().toLocaleTimeString()
-      }
-    ];
+      };
+    
     setHistory([...history, newEntry]);
   };
 
+  //a function to open the settings
+  const openSettings = () => {
+    console.log('open settings');
+  };
+      // 
+      //<History history={history} />
+      //<Settings setGoal={setGoal} setProgress={setProgress} setHistory={setHistory}/>
 
   return (
     <>
-     <Header />
+     <Header openSettings={openSettings}/>
      <Activity goal={goal} progress={progress} />
-      <DrinkLog logWater={logWater} /> 
-      <History history={history} />
-      <Settings setGoal={setGoal} setProgress={setProgress} setHistory={setHistory}/>
+     <DrinkLog logWater={logWater} />
+      
+
+      
     </>
   )
 }
