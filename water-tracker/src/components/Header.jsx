@@ -1,10 +1,8 @@
 // components/Header.jsx
-// Displays the top header with logo, search bar, date, and calendar icon.
 import React from 'react';
-import { FaCalendarAlt, FaSearch } from 'react-icons/fa'; // CHANGE: Import FaSearch
+import { FaCalendarAlt, FaSearch } from 'react-icons/fa';
 
 const Header = () => {
-  // Format the current date as "Thur, 24 Mar 2025"
   const currentDate = new Date().toLocaleDateString('en-US', {
     weekday: 'short',
     day: 'numeric',
@@ -13,19 +11,19 @@ const Header = () => {
   });
 
   return (
-    <header className="flex justify-between items-center p-4 bg-white shadow-sm mb-6">
+    <header className="flex justify-between items-center p-4 sm:p-6 bg-white shadow-sm mb-4 sm:mb-6">
       {/* Logo and Title */}
       <div className="flex items-center space-x-2">
-        <div className="w-8 h-8 bg-hydra-blue rounded-full flex items-center justify-center text-white font-bold">
+        <div className="w-6 sm:w-8 h-6 sm:h-8 bg-hydra-blue rounded-full flex items-center justify-center text-white font-bold">
           H
         </div>
-        <h1 className="text-2xl font-bold text-hydra-blue">HYDRA</h1>
+        <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-hydra-blue">HYDRA</h1>
       </div>
 
       {/* Search Bar and Date Container */}
-      <div className="flex items-center space-x-4">
-        {/* CHANGE: Adjust search bar width and position */}
-        <div className="relative w-48">
+      <div className="flex items-center space-x-2 sm:space-x-4">
+        {/* Search Bar */}
+        <div className="relative hidden sm:block w-40 md:w-48">
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <input
             type="text"
@@ -36,8 +34,8 @@ const Header = () => {
 
         {/* Date and Calendar Icon */}
         <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-500">{currentDate}</span>
-          <FaCalendarAlt className="w-5 h-5 text-gray-500" />
+          <span className="text-xs sm:text-sm text-gray-500">{currentDate}</span>
+          <FaCalendarAlt className="w-4 sm:w-5 h-4 sm:h-5 text-gray-500" />
         </div>
       </div>
     </header>
