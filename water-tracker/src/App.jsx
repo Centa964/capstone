@@ -1,6 +1,6 @@
 // App.jsx
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom';
 import { FaTachometerAlt, FaBell, FaHistory, FaCog } from 'react-icons/fa';
 import { GiWatermelon, GiGrapes, GiOrange } from 'react-icons/gi';
 import Header from './components/Header';
@@ -122,95 +122,89 @@ const App = () => {
         <Header />
         <div className="flex h-[calc(100vh-72px)]">
           {/* Left Sidebar */}
-          <aside className="w-1/5 bg-gray-50 p-6 flex flex-col justify-between">
-            <div className="bg-pink-100 p-6 rounded-lg shadow-sm">
-              <h2 className="text-2xl font-bold text-gray-800 mb-8">Menu</h2>
-              <nav className="flex flex-col space-y-4">
-                <Link
-                  to="/dashboard"
-                  className={({ isActive }) =>
-                    `flex items-center space-x-2 uppercase font-semibold px-2 py-1 rounded ${
-                      isActive ? 'text-hydra-blue bg-hydra-blue/10' : 'text-gray-600'
-                    }`
-                  }
-                >
-                  <FaTachometerAlt className="w-4 h-4 text-gray-600" />
-                  <span>Dashboard</span>
-                </Link>
-                <Link
-                  to="/reminder"
-                  className={({ isActive }) =>
-                    `flex items-center space-x-2 uppercase px-2 py-1 rounded ${
-                      isActive ? 'text-hydra-blue bg-hydra-blue/10' : 'text-gray-600'
-                    }`
-                  }
-                >
-                  <FaBell className="w-4 h-4 text-gray-600" />
-                  <span>Reminder</span>
-                </Link>
-                <Link
-                  to="/history"
-                  className={({ isActive }) =>
-                    `flex items-center space-x-2 uppercase px-2 py-1 rounded ${
-                      isActive ? 'text-hydra-blue bg-hydra-blue/10' : 'text-gray-600'
-                    }`
-                  }
-                >
-                  <FaHistory className="w-4 h-4 text-gray-600" />
-                  <span>History</span>
-                </Link>
-                <Link
-                  to="/settings"
-                  className={({ isActive }) =>
-                    `flex items-center space-x-2 uppercase px-2 py-1 rounded ${
-                      isActive ? 'text-hydra-blue bg-hydra-blue/10' : 'text-gray-600'
-                    }`
-                  }
-                >
-                  <FaCog className="w-4 h-4 text-gray-600" />
-                  <span>Settings</span>
-                </Link>
-              </nav>
+          <aside className="w-1/5 bg-gray-50 p-6 mt-4 flex flex-col justify-between border-r border-gray-200">
+            <div>
+              {/* Menu Card */}
+              <div className="bg-pink-100 p-6 rounded-lg shadow-sm">
+                <h2 className="text-2xl font-bold text-gray-800 mb-8">Menu</h2>
+                <nav className="flex flex-col space-y-4">
+                  <NavLink
+                    to="/dashboard"
+                    className="flex items-center space-x-2 uppercase font-semibold px-2 py-1 rounded text-gray-600"
+                    activeClassName="text-hydra-blue bg-hydra-blue/10"
+                  >
+                    <FaTachometerAlt className="w-4 h-4 text-gray-600" />
+                    <span>Dashboard</span>
+                  </NavLink>
+                  <NavLink
+                    to="/reminder"
+                    className="flex items-center space-x-2 uppercase px-2 py-1 rounded text-gray-600"
+                    activeClassName="text-hydra-blue bg-hydra-blue/10"
+                  >
+                    <FaBell className="w-4 h-4 text-gray-600" />
+                    <span>Reminder</span>
+                  </NavLink>
+                  <NavLink
+                    to="/history"
+                    className="flex items-center space-x-2 uppercase px-2 py-1 rounded text-gray-600"
+                    activeClassName="text-hydra-blue bg-hydra-blue/10"
+                  >
+                    <FaHistory className="w-4 h-4 text-gray-600" />
+                    <span>History</span>
+                  </NavLink>
+                  <NavLink
+                    to="/settings"
+                    className="flex items-center space-x-2 uppercase px-2 py-1 rounded text-gray-600"
+                    activeClassName="text-hydra-blue bg-hydra-blue/10"
+                  >
+                    <FaCog className="w-4 h-4 text-gray-600" />
+                    <span>Settings</span>
+                  </NavLink>
+                </nav>
+              </div>
             </div>
-            <div className="bg-white p-4 rounded-lg shadow-sm text-gray-500 text-xs">
+            {/* Credentials Card */}
+            <div className="bg-gray-100 p-4 rounded-lg shadow-sm text-gray-500 text-xs">
               <p>Fortunes</p>
               <p>fortunes@success.com</p>
             </div>
           </aside>
 
           {/* Main Content */}
-          <main className="w-4/5 p-6 h-full overflow-y-auto">
+          <main className="w-3/5 p-6 h-full overflow-y-auto">
             <h1 className="text-3xl font-bold text-gray-800 mb-4">Welcome Back Fortunes!</h1>
             <Routes>
               <Route
                 path="/dashboard"
                 element={
                   <>
-                    <Activity intake={intake} goal={goal} goalAchieved={goalAchieved} />
-                    <div className="bg-gray-50 p-4 rounded-lg shadow-sm mt-4">
+                    <div className="bg-blue-50 p-4 rounded-lg shadow-sm mb-12">
+                      <Activity intake={intake} goal={goal} goalAchieved={goalAchieved} />
+                    </div>
+                    <div className="bg-blue-50 p-6 rounded-lg shadow-sm">
                       <h3 className="text-lg font-semibold text-gray-800 mb-2">Hydration Tips</h3>
-                      <p className="text-sm text-gray-600 mb-2">Consuming Fruit Juices Helps Keep Your Hydration Level Up!</p>
-                      <div className="grid grid-cols-3 gap-2">
-                        <div className="bg-red-100 p-3 rounded-lg shadow-sm">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <GiWatermelon className="w-5 h-5 text-red-500" />
+                      <p className="text-sm text-gray-600 mb-4">Consuming Fruit Juices Helps Keep Your Hydration Level Up!</p>
+                      <div className="grid grid-cols-3 gap-4">
+                        <div className="bg-red-100 p-4 rounded-lg shadow-sm w-32 h-32">
+                          <div className="flex flex-col items-center space-y-2">
+                            <GiWatermelon className="w-4 h-4 text-red-500" />
                             <h4 className="text-sm font-semibold text-gray-700">Watermelon</h4>
+                            <p className="text-[10px] text-gray-600 text-center leading-tight">A good choice to stay hydrated. It contains 97% water.</p>
                           </div>
-                          <p className="text-xs text-gray-600">A good choice to stay hydrated. It contains 97% water.</p>
                         </div>
-                        <div className="bg-purple-100 p-3 rounded-lg shadow-sm">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <GiGrapes className="w-5 h-5 text-purple-500" />
+                        <div className="bg-purple-100 p-4 rounded-lg shadow-sm w-32 h-32">
+                          <div className="flex flex-col items-center space-y-2">
+                            <GiGrapes className="w-4 h-4 text-purple-500" />
                             <h4 className="text-sm font-semibold text-gray-700">Grapes</h4>
+                            <p className="text-[10px] text-gray-600 text-center leading-tight">It contains vitamin C, that aids in water retention.</p>
                           </div>
-                          <p className="text-xs text-gray-600">It contains vitamin C, that aids in water retention.</p>
                         </div>
-                        <div className="bg-orange-100 p-3 rounded-lg shadow-sm">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <GiOrange className="w-5 h-5 text-orange-500" />
+                        <div className="bg-orange-100 p-4 rounded-lg shadow-sm w-32 h-32">
+                          <div className="flex flex-col items-center space-y-2">
+                            <GiOrange className="w-4 h-4 text-orange-500" />
                             <h4 className="text-sm font-semibold text-gray-700">Oranges</h4>
+                            <p className="text-[10px] text-gray-600 text-center leading-tight">It contains 72% water. It helps in skin care.</p>
                           </div>
-                          <p className="text-xs text-gray-600">It contains 72% water. It helps in skin care.</p>
                         </div>
                       </div>
                     </div>
@@ -268,24 +262,22 @@ const App = () => {
           </main>
 
           {/* Right Sidebar */}
-          <aside className="w-1/5 bg-white p-6 flex flex-col justify-between">
-            <div className="flex justify-center">
-              <div className="w-24 h-48">
+          <aside className="w-1/5 bg-white p-6 border-l border-gray-200 flex flex-col justify-between">
+            {/* SVG */}
+            <div className="flex justify-center flex-grow">
+              <div className="w-40 h-80">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 100 200"
                   className="w-full h-full"
                 >
-                  {/* Bottle Outline */}
                   <path
                     d="M30 20 L30 10 Q30 5 35 5 H65 Q70 5 70 10 L70 20 Q70 30 80 40 L80 170 Q80 180 70 180 H30 Q20 180 20 170 L20 40 Q20 30 30 20 Z"
                     fill="none"
                     stroke="#60A5FA"
                     strokeWidth="4"
                   />
-                  {/* Cap */}
                   <rect x="35" y="5" width="30" height="10" fill="#60A5FA" />
-                  {/* Water Wave */}
                   <path
                     d="M20 120 Q40 100 60 120 T100 120 L100 180 H0 L0 120 Z"
                     fill="#93C5FD"
@@ -294,8 +286,9 @@ const App = () => {
                 </svg>
               </div>
             </div>
-            <div className="text-gray-600 text-center">
-              <p className="font-medium text-sm">Stay Hydrated & Beat Heat</p>
+            {/* Motivational Card */}
+            <div className="bg-gray-100 p-4 rounded-lg shadow-sm text-gray-600 text-center">
+              <p className="font-medium text-base">Stay Hydrated & Beat Heat</p>
             </div>
           </aside>
         </div>
