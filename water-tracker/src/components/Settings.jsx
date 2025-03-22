@@ -1,49 +1,55 @@
-//set water intake goal
+// components/Settings.jsx
+// Allows the user to set a water intake goal and reset all progress.
+// Includes a confirmation popup for resetting.
+import React, { useState } from 'react';
 
-import { useState } from "react";
+const Settings = ({ setGoal, resetProgress, resetProgressWithoutGoal, setShowResetConfirm }) => {
+  const [newGoal, setNewGoal] = useState('');
 
-const Settings = ({ setGoal }) => {
-    const [newGoal, setNewGoal] = useState('');
-    const [ showConfirmation, setShowConfirmation ] = useState(false);
-    const [resetMessage, setResetMessage] = useState('');
-
- const handleReset = () => {
-        setGoal(0);
-        setHistory([]);
-        setResetMessage('Progress reset successfully');
-        setTimeout(() => setResetMessage(''), 2000);    
+  const handleSetGoal = () => {
+    if (newGoal && !isNaN(newGoal) && parseInt(newGoal) > 0) {
+      console.log('Setting new goal:', parseInt(newGoal));
+      setGoal(parseInt(newGoal));
+      resetProgressWithoutGoal();
+      setShowResetConfirm(false); // Ensure any open reset confirmation popup is closed
+      // CHANGE: Remove redundant setGoal call
+      // CHANGE: Remove setTimeout and dispatch the event directly
+      window.dispatchEvent(new CustomEvent('setLogMessage', { detail: 'Goal saved!' }));
+      setNewGoal('');
+    } else {
+      console.log('Invalid goal input:', newGoal);
+      window.dispatchEvent(new CustomEvent('setLogMessage', { detail: 'Please enter a valid goal!' }));
     }
+  };
 
-    //function to reset 
-    const handleSavedGoal = (e) => {
-        if (!newGoal || isNaN(newGoal) || newGoal <= 0) return;
-        setGoal(parseInt(newGoal));
-        setNewGoal('');
-        };
-
-        return (
-            <div>
-                <h2>Settings</h2>
-                <input 
-                    type="number" 
-                    value={newGoal} 
-                    onChange={(e) => setNewGoal(e.target.value)} 
-                    placeholder="Set your goal in ml" 
-                />
-                <button onClick={handleSavedGoal}>Save</button>
-                <button onClick={() => setShowConfirm(true)}>Reset Progress</button>
-
-          
-                {showConfirmation && (
-                    <div>
-                        <p>Are you sure you want to reset your progress?</p>
-                        <button onClick={handleReset}>Yes</button>
-                        <button onClick={() => setShowConfirmation(false)}>No</button>
-                    </div>
-                )}
-                {resetMessage && <p>{resetMessage}</p>}
-            </div>
-        );
+  return (
+    <div className="bg-gray-50 p-6 rounded-lg shadow-sm mb-8">
+      <h3 className="text-xl font-semibold text-gray-700 mb-4">Settings</h3>
+      <div className="flex space-x-4 items-center">
+        <input
+          type="number"
+          value={newGoal}
+          onChange={(e) => setNewGoal(e.target.value)}
+          placeholder="Set water goal (ml)"
+          className="border rounded-lg px-4 py-2 focus:outline-none"
+          min="1"
+        />
+        <button
+          onClick={handleSetGoal}
+          className="bg-hydra-blue text-white px-4 py-2 rounded-lg"
+        >
+          Save Goal
+        </button>
+        <button
+          onClick={() => setShowResetConfirm(true)}
+          className="bg-red-500 text-white px-4 py-2 rounded-lg"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+  );
 };
 
+// CHANGE: Update export to match the import in App.jsx
 export default Settings;

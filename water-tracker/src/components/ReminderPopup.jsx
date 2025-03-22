@@ -1,22 +1,21 @@
-// Pop-up reminder for water intake
+// ReminderPopup.jsx
+// Displays a timed reminder to drink water, dismissable by the user.
+import React from 'react';
 
-import React from "react";
-
-const ReminderPopup = ({ showReminder, setShowReminder }) => {
-    if (!showReminder) return null;
-
-    return (
-        <div className="reminder-popup">
-            <h2>Stay Hydrated!</h2>
-            <button onClick={() => setShowReminder(false)}>Close</button>
-            <button onClick={() => {
-                setShowReminder(false);
-                setTimeout(() => setShowReminder(true), 1000 * 60 * 5); 
-            }}>
-                Remind me again in 5 minutes
-            </button>
-        </div>
-    );
+const ReminderPopup = ({ setShowReminder }) => {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <p className="text-lg text-gray-700 mb-4">💧 Time to drink more water!</p>
+        <button
+          onClick={() => setShowReminder(false)}
+          className="bg-hydra-blue text-white px-4 py-2 rounded-lg"
+        >
+          Got it!
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default ReminderPopup;
