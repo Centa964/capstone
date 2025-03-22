@@ -1,17 +1,44 @@
-// ReminderPopup.jsx
-// Displays a timed reminder to drink water, dismissable by the user.
-import React from 'react';
+// components/ReminderPopup.jsx
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const ReminderPopup = ({ setShowReminder }) => {
+const ReminderPopup = () => {
+  const [reminderTime, setReminderTime] = useState('');
+  const navigate = useNavigate();
+
+  const handleSaveReminder = () => {
+    if (reminderTime) {
+      console.log(`Reminder set for: ${reminderTime}`);
+      navigate('/dashboard');
+    }
+  };
+
+  const handleCancel = () => {
+    navigate('/dashboard');
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <p className="text-lg text-gray-700 mb-4">💧 Time to drink more water!</p>
+    <div className="bg-gray-50 p-6 rounded-lg shadow-sm animate-fadeIn">
+      <h3 className="text-xl font-semibold text-gray-800 mb-4">Set Reminder</h3>
+      <div className="flex space-x-4">
+        <input
+          type="time"
+          value={reminderTime}
+          onChange={(e) => setReminderTime(e.target.value)}
+          className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+        />
         <button
-          onClick={() => setShowReminder(false)}
-          className="bg-hydra-blue text-white px-4 py-2 rounded-lg"
+          onClick={handleSaveReminder}
+          className="bg-hydra-blue text-white px-6 py-2 rounded-lg disabled:bg-gray-300"
+          disabled={!reminderTime}
         >
-          Got it!
+          Save
+        </button>
+        <button
+          onClick={handleCancel}
+          className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg"
+        >
+          Cancel
         </button>
       </div>
     </div>

@@ -1,35 +1,34 @@
-// History.jsx
-// Displays past water intake entries in a flat list with time only.
-// Filters out entries older than 7 days.
+// components/History.jsx
 import React from 'react';
 
 const History = ({ history }) => {
-  // Filter out entries older than 7 days (optional)
-  const filteredHistory = history.filter((entry) => {
-    const entryDate = new Date(entry.date);
-    const today = new Date();
-    const diffTime = Math.abs(today - entryDate);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays <= 7;
-  });
+  const groupedHistory = history.reduce((acc, entry) => {
+    const date = entry.date;
+    if (!acc[date]) acc[date] = [];
+    acc[date].push(entry);
+    return acc;
+  }, {});
 
   return (
-    <div>
-      {filteredHistory.length === 0 ? (
-        <p className="text-sm text-gray-600">No history yet.</p>
+    <div className="bg-gray-50 p-6 rounded-lg shadow-sm max-h-[calc(100%-8rem)] overflow-y-auto">
+      <h3 className="text-xl font-semibold text-gray-800 mb-4">History</h3>
+      {Object.keys(groupedHistory).length === 0 ? (
+        <p className="text-sm text-gray-600">No history available.</p>
       ) : (
-        <ul className="space-y-2">
-          {filteredHistory.map((entry, index) => (
-            <li key={index} className="flex items-center space-x-2 text-gray-600">
-              {/* CHANGE: Adjust blue dot size */}
-              <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
-              {/* CHANGE: Show only the time (e.g., "8:00 am"), adjust text size */}
-              <span className="text-sm">
-                {entry.amount} ml {entry.timestamp && entry.timestamp.includes(', ') ? entry.timestamp.split(', ')[1].toLowerCase() : 'Invalid time'}
-              </span>
-            </li>
-          ))}
-        </ul>
+        Object.keys(groupedHistory).map((date) => (
+          <div key={date} className="mb-4">
+            <h4 className="text-lg font-medium text-gray-700 mb-2">{date}</h4>
+            <ul className="space-y-2">
+              {groupedHistory[date].map((entry, index) => (
+                <li key={index} className="bg-white p-3 rounded-lg shadow-sm">
+                  <p className="text-sm text-gray-600">
+                    {entry.timestamp}: Drank {entry.amount}ml
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
       )}
     </div>
   );
