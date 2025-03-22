@@ -30,7 +30,7 @@ const App = () => {
       if (savedHistory) setHistory(JSON.parse(savedHistory) || []);
     } catch (err) {
       console.error('Error loading from local storage:', err);
-      setError('Failed to load data from local storage.');
+      setError('Failed to load data to local storage.');
     }
   }, []);
 
@@ -171,39 +171,39 @@ const App = () => {
           </aside>
 
           {/* Main Content */}
-          <main className="w-3/5 p-6 h-full overflow-y-auto">
+          <main className="w-3/5 p-4 h-full overflow-y-auto flex flex-col">
             <h1 className="text-3xl font-bold text-gray-800 mb-4">Welcome Back Fortunes!</h1>
             <Routes>
               <Route
                 path="/dashboard"
                 element={
                   <>
-                    <div className="bg-blue-50 p-4 rounded-lg shadow-sm mb-12">
+                    <div className="bg-blue-50 p-4 rounded-lg shadow-sm mb-8">
                       <Activity intake={intake} goal={goal} goalAchieved={goalAchieved} />
                     </div>
-                    <div className="bg-blue-50 p-6 rounded-lg shadow-sm">
+                    <div className="bg-blue-50 p-6 rounded-lg shadow-sm flex-1">
                       <h3 className="text-lg font-semibold text-gray-800 mb-2">Hydration Tips</h3>
                       <p className="text-sm text-gray-600 mb-4">Consuming Fruit Juices Helps Keep Your Hydration Level Up!</p>
                       <div className="grid grid-cols-3 gap-4">
-                        <div className="bg-red-100 p-4 rounded-lg shadow-sm w-32 h-32">
-                          <div className="flex flex-col items-center space-y-2">
-                            <GiWatermelon className="w-4 h-4 text-red-500" />
-                            <h4 className="text-sm font-semibold text-gray-700">Watermelon</h4>
-                            <p className="text-[10px] text-gray-600 text-center leading-tight">A good choice to stay hydrated. It contains 97% water.</p>
+                        <div className="bg-red-100 p-2 rounded-lg shadow-sm max-w-28 h-20 mx-auto">
+                          <div className="flex flex-col items-center space-y-1 p-2">
+                            <GiWatermelon className="w-2 h-2 text-red-500" />
+                            <h4 className="text-xs font-semibold text-gray-700">Watermelon</h4>
+                            <p className="text-[9px] text-gray-600 text-center leading-tight">A good choice to stay hydrated. It contains 97% water.</p>
                           </div>
                         </div>
-                        <div className="bg-purple-100 p-4 rounded-lg shadow-sm w-32 h-32">
-                          <div className="flex flex-col items-center space-y-2">
-                            <GiGrapes className="w-4 h-4 text-purple-500" />
-                            <h4 className="text-sm font-semibold text-gray-700">Grapes</h4>
-                            <p className="text-[10px] text-gray-600 text-center leading-tight">It contains vitamin C, that aids in water retention.</p>
+                        <div className="bg-purple-100 p-2 rounded-lg shadow-sm max-w-28 h-20 mx-auto">
+                          <div className="flex flex-col items-center space-y-1 p-2">
+                            <GiGrapes className="w-2 h-2 text-purple-500" />
+                            <h4 className="text-xs font-semibold text-gray-700">Grapes</h4>
+                            <p className="text-[9px] text-gray-600 text-center leading-tight">It contains vitamin C, that aids in water retention.</p>
                           </div>
                         </div>
-                        <div className="bg-orange-100 p-4 rounded-lg shadow-sm w-32 h-32">
-                          <div className="flex flex-col items-center space-y-2">
-                            <GiOrange className="w-4 h-4 text-orange-500" />
-                            <h4 className="text-sm font-semibold text-gray-700">Oranges</h4>
-                            <p className="text-[10px] text-gray-600 text-center leading-tight">It contains 72% water. It helps in skin care.</p>
+                        <div className="bg-orange-100 p-2 rounded-lg shadow-sm max-w-28 h-20 mx-auto">
+                          <div className="flex flex-col items-center space-y-1 p-2">
+                            <GiOrange className="w-2 h-2 text-orange-500" />
+                            <h4 className="text-xs font-semibold text-gray-700">Oranges</h4>
+                            <p className="text-[9px] text-gray-600 text-center leading-tight">It contains 72% water. It helps in skin care.</p>
                           </div>
                         </div>
                       </div>
