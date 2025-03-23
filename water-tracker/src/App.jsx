@@ -1,6 +1,4 @@
-// This file is the main component of the hydration tracking app, managing the overall layout and state.
-// It uses React Router for navigation and includes a sidebar, main content, and right sidebar (tablet/desktop).
-// The app tracks water intake, goals, and history, with features like reminders, settings, and hydration tips.
+//for tracking water intake, goals, and history
 
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom'; 
@@ -14,7 +12,7 @@ import History from './components/History';
 
 
 const App = () => {
-  //State Variables
+  //state Variables
     const [intake, setIntake] = useState(0);
   const [goal, setGoal] = useState(null);
   const [history, setHistory] = useState([]);
@@ -25,7 +23,7 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [streak, setStreak] = useState(3); 
 
-    // Load initial data from localStorage when the app mounts
+    //load previous data from localStorage when the app starts
   useEffect(() => {
     try {
       const savedGoal = localStorage.getItem('waterGoal');
@@ -41,7 +39,7 @@ const App = () => {
     }
   }, []);
 
-  // Save data to localStorage when user logs intake, goal, or history 
+  //save data to localStorage
   useEffect(() => {
     try {
       console.log('Saving to localStorage - Goal:', goal, 'Intake:', intake);
@@ -54,7 +52,7 @@ const App = () => {
     }
   }, [goal, intake, history]);
 
-  // Handle confirmation messages with a timeout
+  //confirm popup messag with a timeout
   useEffect(() => {
     const handleSetLogMessage = (event) => {
       setLogMessage(event.detail);
@@ -64,7 +62,7 @@ const App = () => {
     return () => window.removeEventListener('setLogMessage', handleSetLogMessage);
   }, []);
 
-  //Function to Log a specified amount, update history, and shows popup message
+  //log water amount, update history, and popup a message
   const logWater = (amount) => {
     try {
       const timestamp = new Date().toLocaleString('en-US', {
@@ -84,7 +82,7 @@ const App = () => {
     }
   };
 
-  // to resets all progress for intake, goal, history and clear localStorage
+  //resets all progress, clear localStorage
   const resetProgress = () => {
     try {
       console.log('Resetting progress - Setting intake and goal to 0');
@@ -102,7 +100,7 @@ const App = () => {
     }
   };
 
-  //this function resets intake and history only, without the goal
+  //to reset intake, history only, minus goal
   const resetProgressWithoutGoal = () => {
     try {
       console.log('Resetting progress without affecting goal - Setting intake to 0');
@@ -116,7 +114,7 @@ const App = () => {
     }
   };
 
-   //tracks if the goal set is achieved, puts % in progress circle
+   //tracks if goal is reached, puts % in progress circle
   const goalAchieved = goal !== null && goal > 0 && intake >= goal;
     const progressPercentage = goal && goal > 0 ? Math.min((intake / goal) * 100, 100) : 0;
 
@@ -348,7 +346,6 @@ const App = () => {
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
 
-            {/*Confirms before resetting progress*/}
             {showResetConfirm && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-11/12 sm:w-auto">
@@ -380,7 +377,6 @@ const App = () => {
             )}
           </main>
 
-          {/*Right Sidebar*/}
           <aside className="hidden sm:block w-full sm:w-1/4 md:w-1/5 p-4 sm:p-6 border-l border-gray-200 flex flex-col justify-between bg-white overflow-y-auto">
             <div className="flex justify-center">
               <div className="w-32 sm:w-40 h-48 sm:h-64">
@@ -414,7 +410,7 @@ const App = () => {
               </div>
             </div>
           </aside>
-          
+
           <footer className="sm:hidden fixed bottom-0 left-0 right-0 bg-gray-100 p-2 text-gray-500 text-xs shadow-t z-50">
             <div className="flex items-center justify-center space-x-2">
               <FaUser className="w-4 h-4 text-gray-500" />
