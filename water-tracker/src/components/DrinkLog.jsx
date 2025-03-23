@@ -1,4 +1,4 @@
-// components/DrinkLog.jsx
+//allows users to log their custom water intake. has preset buttons
 import React, { useState } from 'react';
 
 const DrinkLog = ({ logWater, goalAchieved }) => {

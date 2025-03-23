@@ -1,25 +1,31 @@
-// App.jsx
+// This file is the main component of the hydration tracking app, managing the overall layout and state.
+// It uses React Router for navigation and includes a sidebar, main content, and right sidebar (tablet/desktop).
+// The app tracks water intake, goals, and history, with features like reminders, settings, and hydration tips.
+
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom';
-import { FaTachometerAlt, FaBell, FaHistory, FaCog, FaBars, FaUser } from 'react-icons/fa';
-import { GiWatermelon, GiGrapes, GiOrange } from 'react-icons/gi';
+import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom'; 
+import { FaTachometerAlt, FaBell, FaHistory, FaCog, FaBars, FaUser, FaFire } from 'react-icons/fa'; 
+import { GiWatermelon, GiGrapes, GiOrange } from 'react-icons/gi'; 
 import Header from './components/Header';
-import Activity from './components/Activity';
-import DrinkLog from './components/DrinkLog';
-import Settings from './components/Settings';
-import ReminderPopup from './components/ReminderPopup';
-import History from './components/History';
+import Activity from './components/Activity'; 
+import Settings from './components/Settings'; 
+import ReminderPopup from './components/ReminderPopup'; 
+import History from './components/History'; 
+
 
 const App = () => {
-  const [intake, setIntake] = useState(0);
+  //State Variables
+    const [intake, setIntake] = useState(0);
   const [goal, setGoal] = useState(null);
   const [history, setHistory] = useState([]);
   const [showReminder, setShowReminder] = useState(false);
   const [logMessage, setLogMessage] = useState('');
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [error, setError] = useState(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State for toggling menu on mobile
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [streak, setStreak] = useState(3); 
 
+    // Load initial data from localStorage when the app mounts
   useEffect(() => {
     try {
       const savedGoal = localStorage.getItem('waterGoal');
@@ -35,6 +41,7 @@ const App = () => {
     }
   }, []);
 
+  // Save data to localStorage when user logs intake, goal, or history 
   useEffect(() => {
     try {
       console.log('Saving to localStorage - Goal:', goal, 'Intake:', intake);
@@ -47,16 +54,17 @@ const App = () => {
     }
   }, [goal, intake, history]);
 
+  // Handle confirmation messages with a timeout
   useEffect(() => {
     const handleSetLogMessage = (event) => {
       setLogMessage(event.detail);
       setTimeout(() => setLogMessage(''), 2000);
     };
-
     window.addEventListener('setLogMessage', handleSetLogMessage);
     return () => window.removeEventListener('setLogMessage', handleSetLogMessage);
   }, []);
 
+  //Function to Log a specified amount, update history, and shows popup message
   const logWater = (amount) => {
     try {
       const timestamp = new Date().toLocaleString('en-US', {
@@ -76,6 +84,7 @@ const App = () => {
     }
   };
 
+  // to resets all progress for intake, goal, history and clear localStorage
   const resetProgress = () => {
     try {
       console.log('Resetting progress - Setting intake and goal to 0');
@@ -93,6 +102,7 @@ const App = () => {
     }
   };
 
+  //this function resets intake and history only, without the goal
   const resetProgressWithoutGoal = () => {
     try {
       console.log('Resetting progress without affecting goal - Setting intake to 0');
@@ -106,8 +116,11 @@ const App = () => {
     }
   };
 
+   //tracks if the goal set is achieved, puts % in progress circle
   const goalAchieved = goal !== null && goal > 0 && intake >= goal;
+    const progressPercentage = goal && goal > 0 ? Math.min((intake / goal) * 100, 100) : 0;
 
+  //catch some errors
   if (error) {
     return (
       <div className="p-4 sm:p-8">
@@ -117,28 +130,23 @@ const App = () => {
     );
   }
 
-  return (
+    return (
     <BrowserRouter>
       <div className="min-h-screen bg-white font-sans h-screen overflow-hidden">
-        <Header />
-        {/* Main layout: Stack vertically on mobile, flex row on tablet/desktop */}
-        <div className="flex flex-col sm:flex-row h-[calc(100vh-72px)] pb-12 sm:pb-0">
-          {/* Hamburger Menu Button (Visible on Mobile) */}
-          <button
+             <Header />
+             <div className="flex flex-col sm:flex-row h-[calc(100vh-72px)] pb-12 sm:pb-0">
+                    <button
             className="sm:hidden p-4 text-gray-600 focus:outline-none"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <FaBars className="w-6 h-6" />
           </button>
-
-          {/* Left Sidebar (Menu) */}
-          <aside
+                 <aside
             className={`${
               isMenuOpen ? 'block' : 'hidden'
             } sm:block w-full sm:w-1/3 md:w-1/5 p-4 sm:p-6 mt-4 flex flex-col justify-between border-r border-gray-200 bg-gray-50 absolute sm:static top-16 left-0 z-50 sm:z-auto bg-white sm:bg-gray-50 shadow-lg sm:shadow-none`}
           >
-            <div>
-              {/* Menu Card */}
+            <div className="space-y-4">
               <div className="bg-pink-100 p-4 sm:p-4 rounded-lg shadow-sm overflow-hidden">
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-6 sm:mb-8">Menu</h2>
                 <nav className="flex flex-col space-y-3 sm:space-y-4">
@@ -180,8 +188,52 @@ const App = () => {
                   </NavLink>
                 </nav>
               </div>
+              <div className="bg-blue-100 p-4 rounded-lg shadow-sm">
+                <h3 className="text-sm font-semibold text-gray-800 mb-2">Progress</h3>
+                <div className="flex items-center space-x-4">
+                  <div className="relative w-12 h-12">
+                    <svg className="w-full h-full" viewBox="0 0 36 36">
+                      <path
+                        d="M18 2.0845
+                          a 15.9155 15.9155 0 0 1 0 31.831
+                          a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none"
+                        stroke="#E5E7EB"
+                        strokeWidth="3"
+                      />
+                      <path
+                        d="M18 2.0845
+                          a 15.9155 15.9155 0 0 1 0 31.831
+                          a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none"
+                        stroke="#60A5FA"
+                        strokeWidth="3"
+                        strokeDasharray={`${progressPercentage}, 100`}
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-gray-800">
+                      {Math.round(progressPercentage)}%
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    {intake}ml / {goal || 0}ml
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between bg-gray-100 p-2 rounded-lg shadow-sm">
+                <span className="text-sm text-gray-600">Reminders</span>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={showReminder}
+                    onChange={() => setShowReminder(!showReminder)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-10 h-5 bg-gray-200 rounded-full peer peer-checked:bg-hydra-blue"></div>
+                  <div className="absolute w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-5"></div>
+                </label>
+              </div>
             </div>
-            {/* Credentials Card (Tablet/Desktop) */}
             <div className="hidden sm:block bg-gray-100 p-2 sm:p-4 rounded-lg shadow-sm text-gray-500 text-xs">
               <div className="flex items-center space-x-2">
                 <FaUser className="w-4 h-4 text-gray-500" />
@@ -193,8 +245,8 @@ const App = () => {
             </div>
           </aside>
 
-          {/* Main Content */}
-          <main className="w-full sm:w-1/2 md:w-3/5 p-4 sm:p-4 h-full overflow-y-auto flex flex-col">
+         
+          <main className="w-full sm:w-1/2 md:w-3/5 p-4 sm:p-4 h-full overflow-y-auto flex flex-col relative">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-4">Welcome Back Fortunes!</h1>
             <Routes>
               <Route
@@ -231,7 +283,6 @@ const App = () => {
                         </div>
                       </div>
                     </div>
-                    {/* SVG and Motivational Card (Mobile Only) */}
                     <div className="sm:hidden bg-gray-100 p-2 rounded-lg shadow-sm mb-4 flex flex-col items-center space-y-2">
                       <div className="w-16 h-24">
                         <svg
@@ -252,6 +303,10 @@ const App = () => {
                             opacity="0.7"
                           />
                         </svg>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <FaFire className="w-4 h-4 text-orange-500" />
+                        <p className="text-xs text-gray-600">{streak} days in a row!</p>
                       </div>
                       <p className="font-medium text-xs text-gray-600 text-center">Stay Hydrated & Beat Heat</p>
                     </div>
@@ -293,6 +348,7 @@ const App = () => {
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
 
+            {/*Confirms before resetting progress*/}
             {showResetConfirm && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-11/12 sm:w-auto">
@@ -324,9 +380,8 @@ const App = () => {
             )}
           </main>
 
-          {/* Right Sidebar (Tablet/Desktop Only) */}
+          {/*Right Sidebar*/}
           <aside className="hidden sm:block w-full sm:w-1/4 md:w-1/5 p-4 sm:p-6 border-l border-gray-200 flex flex-col justify-between bg-white overflow-y-auto">
-            {/* SVG */}
             <div className="flex justify-center">
               <div className="w-32 sm:w-40 h-48 sm:h-64">
                 <svg
@@ -349,13 +404,17 @@ const App = () => {
                 </svg>
               </div>
             </div>
-            {/* Motivational Card */}
-            <div className="bg-gray-100 p-4 rounded-lg shadow-sm text-gray-600 text-center">
-              <p className="font-medium text-sm sm:text-base">Stay Hydrated & Beat Heat</p>
+            <div className="space-y-4">
+              <div className="bg-orange-100 p-4 rounded-lg shadow-sm flex items-center space-x-2">
+                <FaFire className="w-5 h-5 text-orange-500" />
+                <p className="text-sm text-gray-600">{streak} days in a row!</p>
+              </div>
+              <div className="bg-gray-100 p-4 rounded-lg shadow-sm text-gray-600 text-center">
+                <p className="font-medium text-sm sm:text-base">Stay Hydrated & Beat Heat</p>
+              </div>
             </div>
           </aside>
-
-          {/* Footer (Mobile Only) */}
+          
           <footer className="sm:hidden fixed bottom-0 left-0 right-0 bg-gray-100 p-2 text-gray-500 text-xs shadow-t z-50">
             <div className="flex items-center justify-center space-x-2">
               <FaUser className="w-4 h-4 text-gray-500" />

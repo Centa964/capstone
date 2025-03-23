@@ -1,4 +1,5 @@
-// components/Settings.jsx
+//allows users to set goal, log intake, and reset progress
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DrinkLog from './DrinkLog';
@@ -24,7 +25,6 @@ const Settings = ({ setGoal, resetProgress, resetProgressWithoutGoal, setShowRes
   return (
     <div className="bg-gray-50 p-4 sm:p-6 rounded-lg shadow-sm mb-4 sm:mb-6">
       <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Settings</h3>
-      {/* Set Daily Goal Section */}
       <div className="mb-4 sm:mb-6">
         <h4 className="text-base sm:text-lg font-medium text-gray-700 mb-2">Set Daily Goal</h4>
         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
@@ -44,9 +44,7 @@ const Settings = ({ setGoal, resetProgress, resetProgressWithoutGoal, setShowRes
           </button>
         </div>
       </div>
-      {/* Log Water Intake Section */}
       <DrinkLog logWater={handleLogWater} goalAchieved={goalAchieved} />
-      {/* Reset Buttons */}
       <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
         <button
           onClick={() => setShowResetConfirm(true)}

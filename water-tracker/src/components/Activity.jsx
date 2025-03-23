@@ -1,4 +1,5 @@
-// components/Activity.jsx
+//displays the user's water intake progress on the Dashboard.
+
 import React from 'react';
 
 const Activity = ({ intake, goal, goalAchieved }) => {

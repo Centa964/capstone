@@ -1,4 +1,4 @@
-// components/ReminderPopup.jsx
+//provides a form for reminder 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

@@ -1,4 +1,4 @@
-// components/History.jsx
+//displays water intake history
 import React from 'react';
 
 const History = ({ history }) => {
